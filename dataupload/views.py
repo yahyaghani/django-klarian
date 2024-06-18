@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .forms import UploadFileForm
-from .models import FileUpload, DataRecord  
+from .models import FileUpload, DataRecord
 from .file_handlers import get_file_handler
 
 class HomeView(View):
@@ -46,6 +46,24 @@ class QueryDataView(View):
         else:
             records = DataRecord.objects.all()
 
-        data = [{'key': record.key, 'value': record.value} for record in records]
+        data = []
+        temp_record = {}
+        current_upload_id = None
+
+        for record in records:
+            if record.upload_id != current_upload_id:
+                if temp_record:
+                    data.append(temp_record)
+                temp_record = {}
+                current_upload_id = record.upload_id
+
+            if record.upload_id in temp_record:
+                temp_record[record.upload_id].append({record.key: record.value})
+            else:
+                temp_record[record.upload_id] = [{record.key: record.value}]
+
+        if temp_record:
+            data.append(temp_record)
+
         print(f"Queried Data: {data}")
         return JsonResponse(data, safe=False)
