@@ -1,38 +1,44 @@
-# MySuperDataCompany Inc Data Upload and Query Engine
+# MySuperDataCompany
 
-## Setup Instructions
+## Description
+This is a Django application for uploading and querying JSON and CSV files.
+
+## Setup
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Installation
 
 1. Clone the repository:
+    ```sh
+    git clone <repository_url>
+    cd mysuperdatacompany
+    ```
 
-   ```bash
-   git clone your-github-repo-url
-   cd mysuperdatacompany
-   ```
+2. Build and start the Docker containers:
+    ```sh
+    docker-compose up --build
+    ```
 
-2. Build and run the Docker containers:
+3. Apply migrations:
+    ```sh
+    docker-compose exec web python manage.py migrate
+    ```
 
-   ```bash
-   docker-compose up --build
-   ```
+4. Create a superuser (optional):
+    ```sh
+    docker-compose exec web python manage.py createsuperuser
+    ```
 
-3. Apply database migrations:
-
-   ```bash
-   docker-compose run web python manage.py migrate
-   ```
-
-4. Access the application at `http://localhost:8000`.
+5. Access the application at [http://localhost:8000](http://localhost:8000).
 
 ## Usage
 
-- Upload files at `http://localhost:8000/dataupload/upload/`. The form accepts CSV and JSON files.
-- Query the uploaded data at `http://localhost:8000/dataupload/query/`. Optionally, filter by type using the `type` query parameter (e.g., `http://localhost:8000/dataupload/query/?type=csv`).
+- Upload files at [http://localhost:8000/upload/](http://localhost:8000/upload/).
+- Query data at [http://localhost:8000/query/](http://localhost:8000/query/).
 
-## Testing
+## Authors
+- Yahya Ghani
 
-- Manual testing can be performed by accessing the upload and query endpoints.
-
-## Notes
-
-- This proof of concept does not include authentication.
-- All responses from the query view are in JSON format.
