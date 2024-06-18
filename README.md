@@ -42,7 +42,7 @@ This is a Django application for uploading and querying JSON and CSV files.
 - Query with type Json [http://localhost:8000/query/?type=json](http://localhost:8000/query/?type=json).
 
 
-6. Data Schema
+## Data Schema
 
 [
     {"name": "CsvName1", "age": "30", "city": "New York"},
