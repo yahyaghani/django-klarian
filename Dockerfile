@@ -1,24 +1,26 @@
 # Dockerfile
+
+# Pull official base image
 FROM python:3.10
 
-# Set environment variables
-ENV PYTHONUNBUFFERED 1
-
-# Set working directory
+# Set work directory
 WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . /app/
 
-# Copy wait-for-it script
-COPY wait-for-it.sh /app/wait-for-it.sh
+# Add entrypoint.sh
+COPY entrypoint.sh /app/entrypoint.sh
 
-# Install dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Make entrypoint.sh executable
+RUN chmod +x /app/entrypoint.sh
 
-# Expose port 8000
-EXPOSE 8000
+# Run entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
 
-# Run the application
-CMD ["./wait-for-it.sh", "db:5432", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Command to run the Django server
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "mysuperdatacompany.wsgi:application"]

@@ -8,11 +8,11 @@ services:
       POSTGRES_USER: yahya
       POSTGRES_PASSWORD: Open
     ports:
-      - "5433:5432"  # Mapping container port 5432 to host port 5433 to avoid conflicts
+      - "5432:5432"  
 
   migrate:
     build: .
-    command: ./wait-for-it.sh db:5432 -- python manage.py migrate
+    command: ./wait-for-it.sh db:5432 -- ./entrypoint.sh python manage.py migrate
     volumes:
       - .:/app
     depends_on:
@@ -28,7 +28,7 @@ services:
 
   web:
     build: .
-    command: ./wait-for-it.sh db:5432 -- python manage.py runserver 0.0.0.0:8000
+    command: ./wait-for-it.sh db:5432 -- ./wait-for-it.sh migrate:5432 -- python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:

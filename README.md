@@ -18,6 +18,10 @@ This is a Django application for uploading and querying JSON and CSV files.
     ```
 
 2. Build and start the Docker containers:
+   ```sh
+   sudo systemctl start docker && sudo systemctl status docker && export DOCKER_HOST=unix:///var/run/docker.sock
+   ```
+
     ```sh
     docker-compose up --build
     ```
