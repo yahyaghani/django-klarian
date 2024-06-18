@@ -13,7 +13,7 @@ This is a Django application for uploading and querying JSON and CSV files.
 
 1. Clone the repository:
     ```sh
-    git clone <repository_url>
+    git clone https://github.com/yahyaghani/django-klarian
     cd mysuperdatacompany
     ```
 
